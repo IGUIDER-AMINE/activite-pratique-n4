@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {createSecureContext} from "node:tls";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'enset-app';
+  title = 'enset 12345';
+  actions : Array<any> = [
+    {title:"Home","route":"/home",icon:"house"},
+    {title:"Products","route":"/products",icon:"search"},
+    {title:"New Product","route":"/newProduct",icon:"safe"},
+  ];
+  currentAction:any;
+  setCurrentAction(action: any) {
+    this.currentAction=action
+  }
 }

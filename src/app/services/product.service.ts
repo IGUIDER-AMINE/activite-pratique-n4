@@ -12,8 +12,8 @@ export class ProductService {
     // l'injection des dépendances
   }
 
-  public getProducts():Observable<Array<Product>>{
-    return this.http.get<Array<Product>>("http://localhost:8089/products");
+  public getProducts(page : number = 1, size : number = 4):Observable<Array<Product>>{
+    return this.http.get<Array<Product>>(`http://localhost:8089/products?_page=${page}&_limit=${size}`);
   }
 
   public handleCheckProduct(product:Product):Observable<Product>{

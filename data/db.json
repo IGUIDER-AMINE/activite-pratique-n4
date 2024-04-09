@@ -1,0 +1,58 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Computer",
+      "price": 5600,
+      "checked": true
+    },
+    {
+      "id": 2,
+      "name": "Computer",
+      "price": 5600,
+      "checked": true
+    },
+    {
+      "id": 3,
+      "name": "Computer",
+      "price": 5600,
+      "checked": true
+    },
+    {
+      "id": "b3b5",
+      "name": "smart 67",
+      "price": "98752",
+      "checked": true
+    },
+    {
+      "id": "3628",
+      "name": "smart 67",
+      "price": "98752",
+      "checked": true
+    },
+    {
+      "id": "d0dd",
+      "name": "smart 67",
+      "price": "98752",
+      "checked": true
+    },
+    {
+      "id": "382b",
+      "name": "smart 67",
+      "price": "98752",
+      "checked": true
+    },
+    {
+      "id": "b631",
+      "name": "sdf",
+      "price": "55",
+      "checked": true
+    },
+    {
+      "id": "dad0",
+      "name": "lkmlm",
+      "price": 0,
+      "checked": false
+    }
+  ]
+}

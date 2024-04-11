@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ProductService} from "../services/product.service";
 import {Product} from "../model/product.model";
 import {Observable} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-products',
@@ -12,18 +13,29 @@ import {Observable} from "rxjs";
 export class ProductsComponent implements OnInit{
   //variable de type Observable par convention on aime beaucoup généralement utiliser var_name$
   //products$! :Observable<Array<Product>>; //! => dire au compilateur tpescipt ignore meme si j'ai pas initialisé
+  //l'état de l'application
   public products :Array<Product>=[];
   public keyword:string="";
-  constructor(private productService:ProductService) {
+  totalPages:number=0;
+  pageSize:number=3;
+  currentPage:number=1;
+
+  constructor(private productService:ProductService,private router:Router) {
   }
   ngOnInit(): void {
-    this.getProducts();
+    this.searchProducts();
   }
 
-  getProducts(){
-    this.productService.getProducts(1,2).subscribe({
-      next: data => {
-        this.products = data
+  searchProducts(){
+    this.productService.searchProducts(this.keyword,this.currentPage,this.pageSize).subscribe({
+      next: (resp) => {
+        this.products = resp.body as Product[]; // as Product[] => je qais que c'est un tableau de produit
+        //let totalProducts:number = parseInt(resp.headers.get('x-total-count')!); //! => je demande de compilateur d'ignorer parce que je sais que ça c'est une attribut qui contient un entier
+        let totalProducts: number = parseInt( resp.headers.get('x-total-count') == null ? this.products.length.toString() :  resp.headers.get('x-total-count')!);
+        this.totalPages=Math.floor(totalProducts/this.pageSize);
+        if(totalProducts%this.pageSize!=0){
+          this.totalPages=this.totalPages+1;
+        }
       },
       error : err => {
         console.log(err);
@@ -58,11 +70,22 @@ export class ProductsComponent implements OnInit{
     })
   }
 
-  searchProducts() {
-    this.productService.searchProducts(this.keyword).subscribe({
+  /*searchProducts() {
+    this.currentPage=1;
+    this.totalPages=0;
+    this.productService.searchProducts(this.keyword,this.currentPage,this.pageSize).subscribe({
       next : value => {
         this.products=value;
       }
     })
+  }*/
+
+  handleGoToPage(page: number) {
+    this.currentPage=page;
+    this.searchProducts()
+  }
+
+  handleEdit(product: Product) {
+    this.router.navigateByUrl(`/editProduct/${product.id}`)
   }
 }

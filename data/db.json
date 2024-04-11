@@ -8,7 +8,7 @@
     },
     {
       "id": 2,
-      "name": "Computer",
+      "name": "Computer MAC",
       "price": 5600,
       "checked": true
     },
@@ -53,6 +53,18 @@
       "name": "lkmlm",
       "price": 0,
       "checked": false
+    },
+    {
+      "id": "8dHOWg2",
+      "name": "am",
+      "price": "842",
+      "checked": true
+    },
+    {
+      "name": "a",
+      "price": 0,
+      "checked": true,
+      "id": "noZDsV7"
     }
   ]
 }

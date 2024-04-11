@@ -4,6 +4,7 @@ import {ProductService} from "../services/product.service";
 import {Product} from "../model/product.model";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+import {AppStateService} from "../services/app-state.service";
 
 @Component({
   selector: 'app-products',
@@ -13,29 +14,37 @@ import {Router} from "@angular/router";
 export class ProductsComponent implements OnInit{
   //variable de type Observable par convention on aime beaucoup généralement utiliser var_name$
   //products$! :Observable<Array<Product>>; //! => dire au compilateur tpescipt ignore meme si j'ai pas initialisé
-  //l'état de l'application
-  public products :Array<Product>=[];
-  public keyword:string="";
-  totalPages:number=0;
-  pageSize:number=3;
-  currentPage:number=1;
-
-  constructor(private productService:ProductService,private router:Router) {
+  constructor(private productService:ProductService,private router:Router,public appState:AppStateService) {
+    // public => pour on peut l'utilisze directement dans la partie template
   }
   ngOnInit(): void {
     this.searchProducts();
   }
 
   searchProducts(){
-    this.productService.searchProducts(this.keyword,this.currentPage,this.pageSize).subscribe({
+    this.productService.searchProducts(
+      this.appState.productState.keyword,
+      this.appState.productState.currentPage,
+      this.appState.productState.pageSize).subscribe({
       next: (resp) => {
-        this.products = resp.body as Product[]; // as Product[] => je qais que c'est un tableau de produit
-        //let totalProducts:number = parseInt(resp.headers.get('x-total-count')!); //! => je demande de compilateur d'ignorer parce que je sais que ça c'est une attribut qui contient un entier
-        let totalProducts: number = parseInt( resp.headers.get('x-total-count') == null ? this.products.length.toString() :  resp.headers.get('x-total-count')!);
-        this.totalPages=Math.floor(totalProducts/this.pageSize);
-        if(totalProducts%this.pageSize!=0){
-          this.totalPages=this.totalPages+1;
+        /*console.log(resp.headers.get('x-total-count'))
+        console.log(resp.body)
+        console.log("resp.body")*/
+
+        let products = resp.body as Product[]; // as Product[] => je qais que c'est un tableau de produit
+        let totalProducts:number = parseInt(resp.headers.get('x-total-count')!); //! => je demande de compilateur d'ignorer parce que je sais que ça c'est une attribut qui contient un entier
+        //this.appState.productState.totalProducts=totalProducts;
+        let totalPages=Math.floor(totalProducts/this.appState.productState.pageSize);
+        if(totalProducts%this.appState.productState.pageSize!=0){
+          ++totalPages;
         }
+        this.appState.setProductState({
+          products:products,
+          totalProducts:totalProducts,
+          totalPages:totalPages,
+        })
+        console.log(resp.headers.get('x-total-count'))
+        console.log(totalProducts)
       },
       error : err => {
         console.log(err);
@@ -65,7 +74,8 @@ export class ProductsComponent implements OnInit{
     this.productService.deleteProduct(product).subscribe({
       next:value => {
         //this.getProducts();
-        this.products = this.products.filter(p=>p.id!=product.id)
+        //this.appState.productState.products = this.appState.productState.products.filter((p:any)=>p.id!=product.id)
+        this.searchProducts();
       }
     })
   }
@@ -81,7 +91,7 @@ export class ProductsComponent implements OnInit{
   }*/
 
   handleGoToPage(page: number) {
-    this.currentPage=page;
+    this.appState.productState.currentPage=page;
     this.searchProducts()
   }
 

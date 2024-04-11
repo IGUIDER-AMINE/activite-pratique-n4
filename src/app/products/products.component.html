@@ -4,7 +4,7 @@
       <div class="card-body">
         <!--FormsModule => un formulaire simple sans validation-->
         <!--{{keyword}}-->
-        <input class="p-1" type="text" [(ngModel)]="keyword" >
+        <input class="p-1" type="text" [(ngModel)]="appState.productState.keyword" >
         <button (click)="searchProducts()" class="btn btn-outline-success ms-1">
           <i class="bi bi-search"></i>
         </button>
@@ -20,7 +20,7 @@
         <tbody>
         <!--quand vous avez un observabel vous ajouter =>products$ | async => automatiwuement votre front-end il fait un subscribe--->
         <!--<tr *ngFor="let product of products$ | async">-->
-        <tr *ngFor="let product of products">
+        <tr *ngFor="let product of appState.productState.products">
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
           <td>
@@ -42,11 +42,11 @@
       </tbody>
     </table>
       <ul class="nav nav-pills">
-        <li *ngFor="let page of [].constructor(this.totalPages);let i =index">
+        <li *ngFor="let page of [].constructor(appState.productState.totalPages);let i =index">
           <!--[ngClass]="currentPage==(i+1)?'btn btn-success m-1':'btn btn-outline-success m-1'"-->
           <!--[class.btn-success]="currentPage==(i+1)" class="btn m-1"-->
           <button (click)="handleGoToPage(i+1)"
-            [ngClass]="currentPage==(i+1)?'btn-success':'btn-outline-success'"
+            [ngClass]="appState.productState.currentPage==(i+1)?'btn-success':'btn-outline-success'"
             class="btn m-1">
           {{(i+1)}}
           </button>

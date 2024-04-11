@@ -9,14 +9,14 @@
     {
       "id": 2,
       "name": "Computer MAC",
-      "price": 5600,
+      "price": "56000",
       "checked": true
     },
     {
       "id": 3,
       "name": "Computer",
       "price": 5600,
-      "checked": true
+      "checked": false
     },
     {
       "id": "b3b5",

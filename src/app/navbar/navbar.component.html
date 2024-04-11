@@ -12,7 +12,9 @@
         <i class="bi bi-{{action.icon}}"></i>
       </button>
     </li>
-    <li *ngIf="appState.productState.status=='LOADING'">
+    <!--*ngIf="appState.productState.status=='LOADING'"-->
+    <!--*ngIf="isLoading==true"-->
+    <li *ngIf="loadingService.isLoading$ | async">
       <div
         class="spinner-border text-primary ms-2"
         role="status"></div>

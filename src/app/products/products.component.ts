@@ -22,14 +22,17 @@ export class ProductsComponent implements OnInit{
   }
 
   searchProducts(){
+    this.appState.setProductState({
+      status:"LOADING"
+    });
+
     this.productService.searchProducts(
       this.appState.productState.keyword,
       this.appState.productState.currentPage,
       this.appState.productState.pageSize).subscribe({
       next: (resp) => {
         /*console.log(resp.headers.get('x-total-count'))
-        console.log(resp.body)
-        console.log("resp.body")*/
+        console.log(resp.body)*/
 
         let products = resp.body as Product[]; // as Product[] => je qais que c'est un tableau de produit
         let totalProducts:number = parseInt(resp.headers.get('x-total-count')!); //! => je demande de compilateur d'ignorer parce que je sais que ça c'est une attribut qui contient un entier
@@ -42,12 +45,16 @@ export class ProductsComponent implements OnInit{
           products:products,
           totalProducts:totalProducts,
           totalPages:totalPages,
+          status:"LOADED"
         })
         console.log(resp.headers.get('x-total-count'))
         console.log(totalProducts)
       },
       error : err => {
-        console.log(err);
+        this.appState.setProductState({
+          status:"ERROR",
+          errorMessage:err
+        })
       }
     })
     //this.products$ = this.productService.getProducts();

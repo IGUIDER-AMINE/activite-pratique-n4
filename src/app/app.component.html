@@ -1,22 +1,7 @@
 <!--//Data binding-->
 <!--<h1>Amine iguider {{title}} 42:27</h1>-->
-<nav class="p-3">
-  <ul class="nav nav-pills">
-    <li *ngFor="let action of actions">
-      <button
-        (click)="setCurrentAction(action)"
-        routerLink="{{action.route}}"
-        [class]="action==currentAction
-        ?'btn btn-success ms-1':
-        'btn btn-outline-success ms-1'"
-      >
-        {{action.title}}
-        <i class="bi bi-{{action.icon}}"></i>
-      </button>
-    </li>
-  </ul>
-</nav>
+<app-navbar></app-navbar>
+<app-app-errors></app-app-errors>
 <app-dashboard></app-dashboard>
 <router-outlet>
-
 </router-outlet>
